@@ -4,6 +4,7 @@ from .models import Pojistenec, Uzivatel
 from .forms import PojistenecForm, UzivatelForm, LoginForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class PojistenecIndex(generic.ListView):
@@ -21,6 +22,26 @@ class AktualPojistenec(generic.DetailView):
     model = Pojistenec
     template_name = 'pojistenci/pojistenec_detail.html'
 
+    def get(self, request, pk):
+        try:
+            pojistenec = self.get_object()
+        except:
+            messages.info(request, 'Něco je špatně.')
+            return redirect('pojistenci')
+        return render(request, self.template_name, {'pojistenec': pojistenec})
+
+    def post(self, request, pk):
+        if request.user.is_authenticated:
+            if 'edit' in request.POST:
+                return redirect('edit_pojistenec', pk=self.get_object().pk)
+        else:
+            if not request.user.is_admin:
+                messages.info(request, 'Nemáš práva pro smazání filmu.')
+                return redirect(reverse('pojistenci'))
+            else:
+                self.get_object().delete()
+        return redirect(reverse('pojistenci'))
+
 
 class CreatePojistenec(generic.edit.CreateView):
     form_class = PojistenecForm
@@ -28,14 +49,21 @@ class CreatePojistenec(generic.edit.CreateView):
 
     # Metoda pro GET request, zobrazí pouze formulář
     def get(self, request):
+        if not request.user.is_admin:
+            messages.info(request, 'Nemáš práva přidat nového pojištěnce.')
+            return redirect(reverse('pojistenci'))
         form = self.form_class(None)
         return render(request, self.template_name, {'form': form})
 
     # Metoda pro POST request, zkontroluje formulář; pokud je validní, vytvoří nového pojištěnce; pokud ne, zobrazí formulář s chybovou hláškou
     def post(self, request):
+        if not request.user.is_admin:
+            messages.info(request, 'Nemáš práva přidat nového pojištěnce.')
+            return redirect(reverse('pojistenci'))
         form = self.form_class(request.POST)
         if form.is_valid():
             form.save(commit=True)
+            return redirect('pojistenci')
         return render(request, self.template_name, {"form": form})
 
 
@@ -45,10 +73,19 @@ class UzivatelViewRegister(generic.edit.CreateView):
     template_name = 'pojistenci/user_form.html'
 
     def get(self, request):
-        form = self.form_class(None)
+        if request.user.is_authenticated:
+            messages.info(
+                request, 'Už jsi přihlášený, nemůžeš se registrovat.')
+            return redirect(reverse('pojistenci'))
+        else:
+            form = self.form_class(None)
         return render(request, self.template_name, {'form': form})
 
     def post(self, request):
+        if request.user.is_authenticated:
+            messages.info(
+                request, 'Už jsi přihlášený, nemůžeš se registrovat.')
+            return redirect(reverse('pojistenci'))
         form = self.form_class(request.POST)
         if form.is_valid():
             uzivatel = form.save(commit=False)
@@ -65,18 +102,27 @@ class UzivatelViewLogin(generic.edit.CreateView):
     template_name = 'pojistenci/user_form.html'
 
     def get(self, request):
-        form = self.form_class(None)
+        if request.user.is_authenticated:
+            messages.info(reques, 'Už jsi přihlášený.')
+            return redirect(reverse('pojistenci'))
+        else:
+            form = self.form_class(None)
         return render(request, self.template_name, {'form': form})
 
     def post(self, request):
+        if request.user.is_authenticated:
+            messages.info(reques, 'Už jsi přihlášený.')
+            return redirect(reverse('pojistenci'))
         form = self.form_class(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
-            user = authenticate(email = email, password = password)
+            user = authenticate(email=email, password=password)
             if user:
                 login(request, user)
                 return redirect('pojistenci')
+            else:
+                messages.error(request, 'Tento účet neexistuje.')
 
         return render(request, self.template_name, {'form': form})
 
@@ -87,3 +133,51 @@ def logout_user(request):
     else:
         messages.info(request, 'Nemůžeš se odhlásit, pokud nejsi přihlášený.')
     return redirect(reverse('login'))
+
+
+class EditPojistenec(LoginRequiredMixin, generic.edit.CreateView):
+    form_class = PojistenecForm
+    template_name = 'pojistenci/create_pojistenec.html'
+
+    def get(self, request, pk):
+        if not request.user.is_admin:
+            messages.info(request, 'Nemáš práva na úpravu pojištěnce.')
+            return redirect(reverse('pojistenci'))
+        try:
+            pojistenec = Pojistenec.objects.get(pk=pk)
+        except:
+            messages.error(request, 'Tento pojištěnec neexistuje.')
+            return redirect('pojistenci')
+        form = self.form_class(instance=pojistenec)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, pk):
+        if not request.user.is_admin:
+            messages.info(request, 'Nemáš práva pro úpravu pojištěnce.')
+            return redirect(reverse('pojistenci'))
+        form = self.form_class(request.POST)
+
+        if form.is_valid():
+            jmeno = form.cleaned_data['jmeno']
+            prijmeni = form.cleaned_data['prijmeni']
+            email = form.cleaned_data['email']
+            telefon = form.cleaned_data['telefon']
+            ulice_cp = form.cleaned_data['ulice_cp']
+            mesto = form.cleaned_data['mesto']
+            psc = form.cleaned_data['psc']
+            stat = form.cleaned_data['stat']
+            try:
+                pojistenec = Pojistenec.objects.get(pk=pk)
+            except:
+                messages.error(request, 'Tento film neexistuje.')
+                return redirect(reverse('pojistenci'))
+            pojistenec.jmeno = jmeno
+            pojistenec.prijmeni = prijmeni
+            pojistenec.email = email
+            pojistenec.telefon = telefon
+            pojistenec.ulice_cp = ulice_cp
+            pojistenec.mesto = mesto
+            pojistenec.psc = psc
+            pojistenec.stat = stat
+            pojistenec.save()
+        return redirect('pojistenec_detail', pk = pojistenec.id)

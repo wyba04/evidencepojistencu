@@ -19,8 +19,8 @@ class TypPojisteni(models.Model):
 class Pojistenec(models.Model):
     jmeno = models.CharField(max_length=200)
     prijmeni = models.CharField(max_length=200)
-    email = models.CharField(max_length=200)
-    telefon = models.CharField(max_length=15)
+    email = models.EmailField(max_length=200)
+    telefon = models.FloatField(max_length=15)
     ulice_cp = models.CharField(max_length=200)
     mesto = models.CharField(max_length=100)
     psc = models.CharField(max_length=9)
