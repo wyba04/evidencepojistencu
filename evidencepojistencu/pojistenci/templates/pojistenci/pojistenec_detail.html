@@ -1,13 +1,17 @@
-{% extends 'base.html' %}
-{% block content %}
-<h3>Detail evidence pojištěnce: </h3>
+{% extends 'base.html' %} {% block content %}
+<h3>Detail evidence pojištěnce:</h3>
 <h1>{{pojistenec.jmeno}} {{pojistenec.prijmeni}}</h1>
-<p>Tel: {{pojistenec.telefon}}        Email: {{pojistenec.email}}</p>
-<h4>Adresa: {{pojistenec.ulice_cp}}, {{pojistenec.mesto}}, {{pojistenec.psc}}, {{pojistenec.stat}}</h4>
-<form method='POST'>
-    {% csrf_token %}
-    {% if user.is_admin %}<button name='edit'>Upravit pojištěnce</button>  <button name='delete'>Smazat pojištěnce</button>{% endif %}
+<p>Tel: {{pojistenec.telefon}} Email: {{pojistenec.email}}</p>
+<h4>
+  Adresa: {{pojistenec.ulice_cp}}, {{pojistenec.mesto}}, {{pojistenec.psc}},
+  {{pojistenec.stat}}
+</h4>
+<form method="POST">
+  {% csrf_token %} {% if user.is_admin %}<button name="edit">
+    Upravit pojištěnce
+  </button>
+  <button name="delete">Smazat pojištěnce</button>{% endif %}
 </form>
-<hr>
+<hr />
 
 {% endblock %}

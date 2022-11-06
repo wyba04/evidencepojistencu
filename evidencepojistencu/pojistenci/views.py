@@ -22,23 +22,25 @@ class AktualPojistenec(generic.DetailView):
     model = Pojistenec
     template_name = 'pojistenci/pojistenec_detail.html'
 
-    def get(self, request, pk=0):
+    def get(self, request, pk):
         try:
             pojistenec = self.get_object()
         except:
             return redirect('pojistenci')
         return render(request, self.template_name, {'pojistenec': pojistenec})
 
-    def post(self, request, pk=0):
+    def post(self, request, pk):
         if request.user.is_authenticated:
             if 'edit' in request.POST:
                 return redirect('edit_pojistenec', pk=self.get_object().pk)
-        else:
-            if not request.user.is_admin:
-                messages.info(request, 'Nemáš práva pro smazání filmu.')
-                return redirect(reverse('pojistenci'))
             else:
-                self.get_object().delete()
+                if not request.user.is_admin:
+                    messages.info(request, 'Nemáš práva pro smazání filmu.')
+                    return redirect(reverse('pojistenci'))
+                else:
+                    self.get_object().delete()
+        else:
+            pass
         return redirect(reverse('pojistenci'))
 
 
