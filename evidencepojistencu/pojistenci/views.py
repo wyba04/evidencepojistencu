@@ -22,15 +22,14 @@ class AktualPojistenec(generic.DetailView):
     model = Pojistenec
     template_name = 'pojistenci/pojistenec_detail.html'
 
-    def get(self, request, pk):
+    def get(self, request, pk=0):
         try:
             pojistenec = self.get_object()
         except:
-            messages.info(request, 'Něco je špatně.')
             return redirect('pojistenci')
         return render(request, self.template_name, {'pojistenec': pojistenec})
 
-    def post(self, request, pk):
+    def post(self, request, pk=0):
         if request.user.is_authenticated:
             if 'edit' in request.POST:
                 return redirect('edit_pojistenec', pk=self.get_object().pk)
@@ -103,7 +102,7 @@ class UzivatelViewLogin(generic.edit.CreateView):
 
     def get(self, request):
         if request.user.is_authenticated:
-            messages.info(reques, 'Už jsi přihlášený.')
+            messages.info(request, 'Už jsi přihlášený.')
             return redirect(reverse('pojistenci'))
         else:
             form = self.form_class(None)
@@ -111,7 +110,7 @@ class UzivatelViewLogin(generic.edit.CreateView):
 
     def post(self, request):
         if request.user.is_authenticated:
-            messages.info(reques, 'Už jsi přihlášený.')
+            messages.info(request, 'Už jsi přihlášený.')
             return redirect(reverse('pojistenci'))
         form = self.form_class(request.POST)
         if form.is_valid():
@@ -180,4 +179,4 @@ class EditPojistenec(LoginRequiredMixin, generic.edit.CreateView):
             pojistenec.psc = psc
             pojistenec.stat = stat
             pojistenec.save()
-        return redirect('pojistenec_detail', pk = pojistenec.id)
+        return redirect('pojistenec_detail', pk=pojistenec.id)

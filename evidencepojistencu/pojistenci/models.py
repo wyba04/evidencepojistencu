@@ -20,7 +20,7 @@ class Pojistenec(models.Model):
     jmeno = models.CharField(max_length=200)
     prijmeni = models.CharField(max_length=200)
     email = models.EmailField(max_length=200)
-    telefon = models.FloatField(max_length=15)
+    telefon = models.CharField(max_length=15)
     ulice_cp = models.CharField(max_length=200)
     mesto = models.CharField(max_length=100)
     psc = models.CharField(max_length=9)
@@ -50,8 +50,8 @@ class SeznamPojisteni(models.Model):
     class Meta:
         verbose_name = 'Seznam pojištění'
         verbose_name_plural = 'Seznam pojištění'
-        
-        
+
+
 class UzivatelManager(BaseUserManager):
     # tvorba uživatele
     def create_user(self, email, password):
@@ -61,36 +61,39 @@ class UzivatelManager(BaseUserManager):
             user.set_password(password)
             user.save()
         return user
-    
+
     # tvorba admin uživatele
     def create_superuser(self, email, password):
         user = self.create_user(email, password)
         user.is_admin = True
         user.save()
         return user
-    
+
+
 class Uzivatel(AbstractBaseUser):
-    
-    email = models.EmailField(max_length = 300, unique=True)
+
+    email = models.EmailField(max_length=300, unique=True)
     is_admin = models.BooleanField(default=False)
-    
+
     class Meta:
         verbose_name = 'uživatel'
         verbose_name_plural = 'uživatelé'
-        
+
     objects = UzivatelManager()
-    
+
     USERNAME_FIELD = 'email'
-    
+
     def __str__(self):
         return f'email: {self.email}'
-    
+
     @property
-    def is_staff(self): # metoda vrací zda je uživatel administrátor
+    def is_staff(self):  # metoda vrací zda je uživatel administrátor
         return self.is_admin
-    
-    def has_perm(self, perm, obj=None): # metoda zjišťuje, zda má uživatel dané specifické povolení, pro neaktivní uživatele vrací False. My vrátíme vždy True.
+
+    # metoda zjišťuje, zda má uživatel dané specifické povolení, pro neaktivní uživatele vrací False. My vrátíme vždy True.
+    def has_perm(self, perm, obj=None):
         return True
-    
-    def has_module_perms(self, app_label): # vrací True pokud má uživatel nějaká povolení pro daný modul.
+
+    # vrací True pokud má uživatel nějaká povolení pro daný modul.
+    def has_module_perms(self, app_label):
         return True

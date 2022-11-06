@@ -12,9 +12,9 @@ class UzivatelCreationForm(forms.ModelForm):
         model = Uzivatel
         fields = ['email']
 
-    def save(self, commit=False):
+    def save(self, commit=True):
         if self.is_valid():
-            user = super().save(commit=True)
+            user = super().save(commit=False)
             user.set_password(self.cleaned_data['password'])
             if commit:
                 user.save()
@@ -45,8 +45,7 @@ class UzivatelAdmin(UserAdmin):
     )
 
     add_fieldsets = (
-        (None, {'fields': ['email', 'password']}
-         ),
+        (None, {'fields': ['email', 'password']}),
     )
     search_fields = ['email']
     ordering = ['email']
