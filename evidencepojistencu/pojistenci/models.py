@@ -1,4 +1,4 @@
-from tabnanny import verbose
+
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
@@ -16,15 +16,33 @@ class TypPojisteni(models.Model):
         verbose_name_plural = 'Typy pojištění'
 
 
-class Pojistenec(models.Model):
-    jmeno = models.CharField(max_length=200)
-    prijmeni = models.CharField(max_length=200)
-    email = models.EmailField(max_length=200)
-    telefon = models.CharField(max_length=15)
-    ulice_cp = models.CharField(max_length=200)
-    mesto = models.CharField(max_length=100)
-    psc = models.CharField(max_length=9)
+class Stat(models.Model):
     stat = models.CharField(max_length=50)
+
+    ordering = ['-stat']
+
+    def __str__(self) -> str:
+        return self.stat
+
+    class Meta:
+        verbose_name = 'Stát'
+        verbose_name_plural = 'Státy'
+
+
+class Pojistenec(models.Model):
+    jmeno = models.CharField(max_length=200, verbose_name='Jméno')
+    prijmeni = models.CharField(max_length=200, verbose_name='Příjmení')
+    email = models.EmailField(max_length=200)
+    telefon = models.CharField(max_length=15, verbose_name='Telefon')
+    ulice_cp = models.CharField(
+        max_length=200, verbose_name='Ulice a číslo popisné')
+    mesto = models.CharField(max_length=100, verbose_name='Město')
+    psc = models.CharField(max_length=9, verbose_name='PSČ')
+    stat = models.ForeignKey(
+        Stat, on_delete=models.SET_NULL, null=True, verbose_name='Stát')
+
+    def __init__(self, *args, **kwargs):
+        super(Pojistenec, self).__init__(*args, **kwargs)
 
     def __str__(self) -> str:
         return f'Jméno: {self.jmeno}, Příjmení: {self.prijmeni} | Email: {self.email} | Ulice: {self.ulice_cp}, Město: {self.mesto}'

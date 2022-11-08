@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django import forms
-from .models import Pojistenec, SeznamPojisteni, TypPojisteni, UzivatelManager, Uzivatel
+from .models import Pojistenec, SeznamPojisteni, TypPojisteni, UzivatelManager, Uzivatel, Stat
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
@@ -57,3 +57,4 @@ admin.site.register(Pojistenec)
 admin.site.register(TypPojisteni)
 admin.site.register(SeznamPojisteni)
 admin.site.register(Uzivatel, UzivatelAdmin)
+admin.site.register(Stat)
