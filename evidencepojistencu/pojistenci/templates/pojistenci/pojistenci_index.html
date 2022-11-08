@@ -2,7 +2,30 @@
 {% block content %}
 <h2>Seznam pojištěnců</h2>
 <hr>
-{% for pojistenec in pojistenci %}
-    Jméno: {{pojistenec.jmeno}} | Příjmení: {{pojistenec.prijmeni}} <a href={% url 'pojistenec_detail' pojistenec.id %}> Detail zde </a> <br>
-{% endfor %}
+    <table class="table">
+      <tr>
+        <th>Jméno</th>
+        <th>Příjmení</th>
+        <th>Email</th>
+        <th>Telefon</th>
+        <th>Ulice</th>
+        <th>Město</th>
+        <th>Zip</th>
+        <th>Stát</th>
+      </tr>
+      {% for pojistenec in pojistenci %}
+      <tr>
+        <td>{{pojistenec.jmeno}}</td>
+        <td>{{pojistenec.prijmeni}}</td>
+        <td>{{pojistenec.email}}</td>
+        <td>{{pojistenec.telefon}}</td>
+        <td>{{pojistenec.ulice_cp}}</td>
+        <td>{{pojistenec.mesto}}</td>
+        <td>{{pojistenec.psc}}</td>
+        <td>{{pojistenec.stat}}</td>
+        <td><a href={% url 'pojistenec_detail' pojistenec.id %}> Detail zde </a> <br></td>
+
+      </tr>
+      {% endfor %}
+
 {% endblock %}

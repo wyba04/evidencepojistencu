@@ -1,9 +1,8 @@
-{% extends 'base.html' %} 
-{% block content %}
-<h3>Detail evidence pojištěnce:</h3>
-<hr>
+{% extends 'base.html' %} {% block content %}
+<h3>Detail evidence pojištění:</h3>
+<hr />
 <h1>{{pojistenec.jmeno}} {{pojistenec.prijmeni}}</h1>
-<p>Tel: {{pojistenec.telefon}} Email: {{pojistenec.email}}</p>
+<p>Tel: {{pojistenec.telefon}}     Email: {{pojistenec.email}}</p>
 <h4>
   Adresa: {{pojistenec.ulice_cp}}, {{pojistenec.mesto}}, {{pojistenec.psc}},
   {{pojistenec.stat}}
@@ -15,5 +14,22 @@
   <button name="delete">Smazat pojištěnce</button>{% endif %}
 </form>
 <hr />
+
+<br />
+<table class="table">
+  <tr>
+    <th>Typ pojištění</th>
+    <th>Předmět pojištění</th>
+    <th>Pojistná částka</th>
+    <th>Platí od</th>
+    <th>Platí do</th>
+    <th>Poznámka</th>
+  </tr>
+  {% for pojisteni in seznam %}
+  <tr>
+    <td>{{pojisteni.typ_pojisteni}}</td>
+  </tr>
+  {% endfor %}
+</table>
 
 {% endblock %}

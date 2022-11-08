@@ -182,3 +182,9 @@ class EditPojistenec(LoginRequiredMixin, generic.edit.CreateView):
             pojistenec.stat = stat
             pojistenec.save()
         return redirect('pojistenec_detail', pk=pojistenec.id)
+    
+    
+    
+def pojistky(request):
+    pojistky = SeznamPojisteni.objects.all()
+    return render(request, 'pojistenci/pojistenec_detail.html', {'pojistky':pojistky})    

@@ -61,6 +61,7 @@ class SeznamPojisteni(models.Model):
     hodnota_pojisteni = models.CharField(max_length=10)
     plati_od = models.CharField(max_length=10)
     plati_do = models.CharField(max_length=10)
+    poznamka = models.TextField(null=True)
 
     def __str__(self) -> str:
         return f'Pojištěnec: {self.pojistenec.jmeno} {self.pojistenec.prijmeni} | Pojištění: {self.typ_pojisteni.nazev_pojisteni} | Částka: {self.hodnota_pojisteni}'
