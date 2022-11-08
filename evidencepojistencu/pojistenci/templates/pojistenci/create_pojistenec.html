@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
+<h2>Zadání nového pojištěnce</h2>
+<hr>
 <form method="POST">
     {% csrf_token %}
     {{ form|crispy }} <br>

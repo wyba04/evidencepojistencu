@@ -71,7 +71,7 @@ class CreatePojistenec(generic.edit.CreateView):
 class UzivatelViewRegister(generic.edit.CreateView):
     form_class = UzivatelForm
     model = Uzivatel
-    template_name = 'pojistenci/user_form.html'
+    template_name = 'pojistenci/register_form.html'
 
     def get(self, request):
         if request.user.is_authenticated:
@@ -80,7 +80,7 @@ class UzivatelViewRegister(generic.edit.CreateView):
             return redirect(reverse('pojistenci'))
         else:
             form = self.form_class(None)
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, {'form': form})  #dict(nazev=self.nazev_stranky),
 
     def post(self, request):
         if request.user.is_authenticated:
@@ -170,7 +170,7 @@ class EditPojistenec(LoginRequiredMixin, generic.edit.CreateView):
             try:
                 pojistenec = Pojistenec.objects.get(pk=pk)
             except:
-                messages.error(request, 'Tento film neexistuje.')
+                messages.error(request, 'Tento pojištěnec neexistuje.')
                 return redirect(reverse('pojistenci'))
             pojistenec.jmeno = jmeno
             pojistenec.prijmeni = prijmeni
