@@ -19,23 +19,28 @@ class PojistenecIndex(generic.ListView):
 
 class AktualPojistenec(generic.DetailView):
 
-    model = Pojistenec
+    model = SeznamPojisteni
     template_name = 'pojistenci/pojistenec_detail.html'
 
+
     def get(self, request, pk):
+        
         try:
-            pojistenec = self.get_object()
+            pojistenec = Pojistenec.objects.get(id=pk)
         except:
             return redirect('pojistenci')
-        return render(request, self.template_name, {'pojistenec': pojistenec})
+        pojistky = SeznamPojisteni.objects.filter(pojistenec_id=pk)
+        context = {'pojistenec':pojistenec,'pojistky':pojistky}
+        return render(request, self.template_name, context)
 
     def post(self, request, pk):
         if request.user.is_authenticated:
             if 'edit' in request.POST:
-                return redirect('edit_pojistenec', pk=self.get_object().pk)
+                return redirect('edit_pojistenec', pk=pk)
             else:
                 if not request.user.is_admin:
-                    messages.info(request, 'Nemáš práva pro smazání pojištěnce.')
+                    messages.info(
+                        request, 'Nemáš práva pro smazání pojištěnce.')
                     return redirect(reverse('pojistenci'))
                 else:
                     self.get_object().delete()
@@ -80,7 +85,8 @@ class UzivatelViewRegister(generic.edit.CreateView):
             return redirect(reverse('pojistenci'))
         else:
             form = self.form_class(None)
-        return render(request, self.template_name, {'form': form})  #dict(nazev=self.nazev_stranky),
+        # dict(nazev=self.nazev_stranky),
+        return render(request, self.template_name, {'form': form})
 
     def post(self, request):
         if request.user.is_authenticated:
@@ -139,13 +145,15 @@ def logout_user(request):
 class EditPojistenec(LoginRequiredMixin, generic.edit.CreateView):
     form_class = PojistenecForm
     template_name = 'pojistenci/create_pojistenec.html'
-
+    
     def get(self, request, pk):
+        
         if not request.user.is_admin:
             messages.info(request, 'Nemáš práva na úpravu pojištěnce.')
             return redirect(reverse('pojistenci'))
         try:
             pojistenec = Pojistenec.objects.get(pk=pk)
+            
         except:
             messages.error(request, 'Tento pojištěnec neexistuje.')
             return redirect('pojistenci')
@@ -182,26 +190,48 @@ class EditPojistenec(LoginRequiredMixin, generic.edit.CreateView):
             pojistenec.stat = stat
             pojistenec.save()
         return redirect('pojistenec_detail', pk=pojistenec.id)
-    
-class SeznamPojistek(generic.ListView):
 
+
+"""def seznampojistek(request, pk):
+    
+    pojistenecakt = Pojistenec.objects.get(id=pk)
+    pojistky = SeznamPojisteni.objects.filter(pojistenec_id=pk)
+        
+    template_name = 'pojistenci/pojistenec_detail_copy.html'
+    context = {'pojistenecakt':pojistenecakt,'pojistky':pojistky}
+    
+    return render(request, template_name, context)"""
+
+
+
+class AktualPojistenec2(generic.DetailView):
+
+    model = SeznamPojisteni
     template_name = 'pojistenci/pojistenec_detail.html'
-    context_object_name = 'pojistkyseznam'
 
-    def get_queryset(self):
-        # řazení od nejmenšího po největší
-        return SeznamPojisteni.objects.all() 
-    
-    
-class TestSeznam(generic.ListView):
-    
-    template_name = 'pojistenci/testseznam.html'
-    context_object_name = 'testsz'
-    
-    def get_queryset(self):
-        return SeznamPojisteni.objects.all()  
-    
-    
 
-    
-    
+    def get(self, request, pk):
+        
+        try:
+            pojistenec = Pojistenec.objects.get(id=pk)
+        except:
+            return redirect('pojistenci')
+        pojistky = SeznamPojisteni.objects.filter(pojistenec_id=pk)
+        context = {'pojistenec':pojistenec,'pojistky':pojistky}
+        return render(request, self.template_name, context)
+
+    def post(self, request, pk):
+        if request.user.is_authenticated:
+            if 'edit' in request.POST:
+                return redirect('edit_pojistenec', pk=pk)
+            else:
+                if not request.user.is_admin:
+                    messages.info(
+                        request, 'Nemáš práva pro smazání pojištěnce.')
+                    return redirect(reverse('pojistenci'))
+                else:
+                    self.get_object().delete()
+        else:
+            pass
+        return redirect(reverse('pojistenci'))
+

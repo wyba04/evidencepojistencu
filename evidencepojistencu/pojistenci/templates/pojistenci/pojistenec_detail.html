@@ -24,11 +24,20 @@
     <th>Platí od</th>
     <th>Platí do</th>
     <th>Poznámka</th>
+    <th>Poznámka</th>
+    <th>Poznámka</th>
   </tr>
-  {% for pojisteni in pojistkyseznam %}
+  {% for pojistka in pojistky %}
   <tr>
 
-    <td>{{pojisteni.typ_pojisteni}}</td>
+    <td>{{pojistka.typ_pojisteni}}</td>
+    <td>{{pojistka.predmet_pojisteni}}</td>
+    <td>{{pojistka.hodnota_pojisteni}}</td>
+    <td>{{pojistka.plati_od}}</td>
+    <td>{{pojistka.plati_do}}</td>
+    <td>{{pojistka.poznamka}}</td>
+    <td>{{pojistka.poznamka}}</td>
+    <td>{{pojistka.poznamka}}</td>
 
   </tr>
   {% endfor %}
