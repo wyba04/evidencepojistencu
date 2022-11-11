@@ -8,10 +8,10 @@
   {{pojistenec.stat}}
 </h4>
 <form method="POST">
-  {% csrf_token %} {% if user.is_admin %}<button name="edit">
+  {% csrf_token %} {% if user.is_admin %}<button class="btn btn-sm btn-info"  name="edit">
     Upravit pojištěnce
   </button>
-  <button name="delete">Smazat pojištěnce</button>{% endif %}
+  <button class="btn btn-sm btn-danger" name="delete">Smazat pojištěnce</button>{% endif %}
 </form>
 <hr />
 
@@ -24,8 +24,7 @@
     <th>Platí od</th>
     <th>Platí do</th>
     <th>Poznámka</th>
-    <th>Poznámka</th>
-    <th>Poznámka</th>
+    <th></th>
   </tr>
   {% for pojistka in pojistky %}
   <tr>
@@ -36,8 +35,8 @@
     <td>{{pojistka.plati_od}}</td>
     <td>{{pojistka.plati_do}}</td>
     <td>{{pojistka.poznamka}}</td>
-    <td>{{pojistka.poznamka}}</td>
-    <td>{{pojistka.poznamka}}</td>
+    <td><a class="btn btn-sm btn-info" href="">Update</a> <a class="btn btn-sm btn-danger"  href="">Delete</a></td>
+  
 
   </tr>
   {% endfor %}

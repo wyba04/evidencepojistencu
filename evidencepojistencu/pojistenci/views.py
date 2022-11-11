@@ -43,7 +43,7 @@ class AktualPojistenec(generic.DetailView):
                         request, 'Nemáš práva pro smazání pojištěnce.')
                     return redirect(reverse('pojistenci'))
                 else:
-                    self.get_object().delete()
+                    Pojistenec(id=pk).delete()
         else:
             pass
         return redirect(reverse('pojistenci'))

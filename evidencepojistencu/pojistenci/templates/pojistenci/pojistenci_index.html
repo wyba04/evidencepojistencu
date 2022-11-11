@@ -2,7 +2,7 @@
 {% block content %}
 <h2>Seznam pojištěnců</h2>
 <hr>
-    <table class="table">
+    <table class="table table-hover">
       <tr>
         <th>Jméno</th>
         <th>Příjmení</th>
@@ -24,7 +24,7 @@
         <td>{{pojistenec.mesto}}</td>
         <td>{{pojistenec.psc}}</td>
         <td>{{pojistenec.stat}}</td>
-        <td><a href={% url 'pojistenec_detail' pojistenec.id %}>Detail zde</a></td>
+        <td><a class="btn btn-sm btn-warning" href={% url 'pojistenec_detail' pojistenec.id %}>Detail zde</a></td>
       </tr>
       {% endfor %}
     </table>
