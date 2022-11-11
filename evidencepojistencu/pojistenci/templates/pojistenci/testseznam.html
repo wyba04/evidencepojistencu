@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Seznam pojištěnců</h2>
+<hr>
+    <table class="table">
+      <tr>
+        <th>Typ pojištění</th>
+        <th>Předmět pojištění</th>
+        <th>Pojistná částka</th>
+        <th>Platí od</th>
+        <th>Platí do</th>
+        <th>Poznámka</th>
+      </tr>
+      {% for pojistka in testsz %}
+      <tr>
+        <td>{{pojistka.typ_pojisteni}}</td>
+        <td>{{pojistka.pojistenec.jmeno}}</td>
+        <td>{{pojistka.pojistenec.prijmeni}}</td>
+
+      </tr>
+      {% endfor %}
+    </table>
+{% endblock %}

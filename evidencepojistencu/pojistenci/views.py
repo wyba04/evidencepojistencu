@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, reverse
 from django.views import generic
-from .models import Pojistenec, Uzivatel
+from .models import *
 from .forms import PojistenecForm, UzivatelForm, LoginForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
@@ -35,7 +35,7 @@ class AktualPojistenec(generic.DetailView):
                 return redirect('edit_pojistenec', pk=self.get_object().pk)
             else:
                 if not request.user.is_admin:
-                    messages.info(request, 'Nemáš práva pro smazání filmu.')
+                    messages.info(request, 'Nemáš práva pro smazání pojištěnce.')
                     return redirect(reverse('pojistenci'))
                 else:
                     self.get_object().delete()
@@ -183,8 +183,25 @@ class EditPojistenec(LoginRequiredMixin, generic.edit.CreateView):
             pojistenec.save()
         return redirect('pojistenec_detail', pk=pojistenec.id)
     
+class SeznamPojistek(generic.ListView):
+
+    template_name = 'pojistenci/pojistenec_detail.html'
+    context_object_name = 'pojistkyseznam'
+
+    def get_queryset(self):
+        # řazení od nejmenšího po největší
+        return SeznamPojisteni.objects.all() 
     
     
-def pojistky(request):
-    pojistky = SeznamPojisteni.objects.all()
-    return render(request, 'pojistenci/pojistenec_detail.html', {'pojistky':pojistky})    
+class TestSeznam(generic.ListView):
+    
+    template_name = 'pojistenci/testseznam.html'
+    context_object_name = 'testsz'
+    
+    def get_queryset(self):
+        return SeznamPojisteni.objects.all()  
+    
+    
+
+    
+    

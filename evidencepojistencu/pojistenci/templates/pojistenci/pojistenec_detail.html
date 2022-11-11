@@ -2,7 +2,7 @@
 <h3>Detail evidence pojištění:</h3>
 <hr />
 <h1>{{pojistenec.jmeno}} {{pojistenec.prijmeni}}</h1>
-<p>Tel: {{pojistenec.telefon}}     Email: {{pojistenec.email}}</p>
+<p>Tel: {{pojistenec.telefon}} Email: {{pojistenec.email}}</p>
 <h4>
   Adresa: {{pojistenec.ulice_cp}}, {{pojistenec.mesto}}, {{pojistenec.psc}},
   {{pojistenec.stat}}
@@ -25,9 +25,11 @@
     <th>Platí do</th>
     <th>Poznámka</th>
   </tr>
-  {% for pojisteni in seznam %}
+  {% for pojisteni in pojistkyseznam %}
   <tr>
+
     <td>{{pojisteni.typ_pojisteni}}</td>
+
   </tr>
   {% endfor %}
 </table>

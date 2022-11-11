@@ -9,11 +9,11 @@ class TypPojisteni(models.Model):
     nazev_pojisteni = models.CharField(max_length=100)
 
     def __str__(self) -> str:
-        return f'Typ pojištění: {self.nazev_pojisteni}'
+        return self.nazev_pojisteni
 
     class Meta:
-        verbose_name = 'Typ pojištění'
-        verbose_name_plural = 'Typy pojištění'
+        verbose_name = 'Druh pojištění'
+        verbose_name_plural = 'Druhy pojištění'
 
 
 class Stat(models.Model):
@@ -54,21 +54,23 @@ class Pojistenec(models.Model):
 
 class SeznamPojisteni(models.Model):
     pojistenec = models.ForeignKey(
-        Pojistenec, on_delete=models.SET_NULL, null=True)
+        Pojistenec, null=True, on_delete=models.SET_NULL, verbose_name='Pojištěnec')
     typ_pojisteni = models.ForeignKey(
-        TypPojisteni, on_delete=models.SET_NULL, null=True)
-    predmet_pojisteni = models.CharField(max_length=80)
-    hodnota_pojisteni = models.CharField(max_length=10)
-    plati_od = models.CharField(max_length=10)
-    plati_do = models.CharField(max_length=10)
-    poznamka = models.TextField(null=True)
-
-    def __str__(self) -> str:
-        return f'Pojištěnec: {self.pojistenec.jmeno} {self.pojistenec.prijmeni} | Pojištění: {self.typ_pojisteni.nazev_pojisteni} | Částka: {self.hodnota_pojisteni}'
+        TypPojisteni, null=True, on_delete=models.SET_NULL, verbose_name='Druh pojištění')
+    predmet_pojisteni = models.CharField(max_length=80, null=True, verbose_name='Předmět pojištění')
+    hodnota_pojisteni = models.CharField(max_length=10, null=True, verbose_name='Hodnota pojištění')
+    plati_od = models.CharField(max_length=10, null=True, verbose_name='Platí od')
+    plati_do = models.CharField(max_length=10, null=True, verbose_name='Platí do')
+    poznamka = models.TextField(null=True, verbose_name='Poznámka', blank=True) # není povinné pole
+    date_created = models.DateTimeField(auto_now_add=True, null=True, verbose_name='Datum vytvoření')
 
     class Meta:
         verbose_name = 'Seznam pojištění'
         verbose_name_plural = 'Seznam pojištění'
+
+
+    def __str__(self) -> str:
+        return f'Pojištěnec: {self.pojistenec.jmeno} {self.pojistenec.prijmeni} | Pojištění: {self.typ_pojisteni.nazev_pojisteni} | Částka: {self.hodnota_pojisteni}'
 
 
 class UzivatelManager(BaseUserManager):

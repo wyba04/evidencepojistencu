@@ -23,9 +23,8 @@
         <td>{{pojistenec.mesto}}</td>
         <td>{{pojistenec.psc}}</td>
         <td>{{pojistenec.stat}}</td>
-        <td><a href={% url 'pojistenec_detail' pojistenec.id %}> Detail zde </a> <br></td>
-
+        <td><a href={% url 'pojistenec_detail' pojistenec.id %}>Detail zde</a></td>
       </tr>
       {% endfor %}
-
+    </table>
 {% endblock %}
