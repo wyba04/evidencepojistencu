@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-<h2>Zadání nového pojištěnce</h2>
+<h2>Zadání nového pojištění:</h2>
 <hr>
-<form method="POST">
+<form action="" method="POST">
     {% csrf_token %}
     {{ form|crispy }} <br>
-    <input class="btn btn-sm btn-success" type="submit">
+    <input class="btn btn-sm btn-success" type="submit" name="Uložit">
 </form>
 <br>
 <br>

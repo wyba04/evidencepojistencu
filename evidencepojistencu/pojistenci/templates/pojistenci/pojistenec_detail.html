@@ -14,9 +14,8 @@
   <button class="btn btn-sm btn-danger" name="delete">Smazat pojištěnce</button>{% endif %}
 </form>
 <hr />
-
-<br />
-<table class="table">
+<a class="btn btn-primary btn-sm btn-block" href={% url 'create_pojisteni' pojistenec.id%}>Nové pojištění</a>
+<table class="table table-hover">
   <tr>
     <th>Typ pojištění</th>
     <th>Předmět pojištění</th>
@@ -35,11 +34,12 @@
     <td>{{pojistka.plati_od}}</td>
     <td>{{pojistka.plati_do}}</td>
     <td>{{pojistka.poznamka}}</td>
-    <td><a class="btn btn-sm btn-info" href="">Update</a> <a class="btn btn-sm btn-danger"  href="">Delete</a></td>
+    <td>{% if user.is_admin %}<a class="btn btn-sm btn-info" href="{% url 'update_pojisteni' pojistka.id %}">Upravit</a> <a class="btn btn-sm btn-danger"  href="">Smazat</a>{% endif %}</td>
   
 
   </tr>
   {% endfor %}
 </table>
+
 
 {% endblock %}

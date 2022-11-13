@@ -45,7 +45,7 @@ class Pojistenec(models.Model):
         super(Pojistenec, self).__init__(*args, **kwargs)
 
     def __str__(self) -> str:
-        return f'Jméno: {self.jmeno}, Příjmení: {self.prijmeni} | Email: {self.email} | Ulice: {self.ulice_cp}, Město: {self.mesto}'
+        return f'{self.jmeno}, {self.prijmeni} | Ulice: {self.ulice_cp}, Město: {self.mesto}'
 
     class Meta:
         verbose_name = 'Pojištěnec'
@@ -54,7 +54,7 @@ class Pojistenec(models.Model):
 
 class SeznamPojisteni(models.Model):
     pojistenec = models.ForeignKey(
-        Pojistenec, null=True, on_delete=models.SET_NULL, verbose_name='Pojištěnec')
+        Pojistenec, null=True, on_delete=models.CASCADE, verbose_name='Pojištěnec')
     typ_pojisteni = models.ForeignKey(
         TypPojisteni, null=True, on_delete=models.SET_NULL, verbose_name='Druh pojištění')
     predmet_pojisteni = models.CharField(max_length=80, null=True, verbose_name='Předmět pojištění')
@@ -98,8 +98,8 @@ class Uzivatel(AbstractBaseUser):
     is_admin = models.BooleanField(default=False)
 
     class Meta:
-        verbose_name = 'uživatel'
-        verbose_name_plural = 'uživatelé'
+        verbose_name = 'Uživatel'
+        verbose_name_plural = 'Uživatelé'
 
     objects = UzivatelManager()
 

@@ -1,7 +1,7 @@
 from dataclasses import fields
 from django import forms
 from django import forms
-from .models import Pojistenec, Uzivatel, Stat
+from .models import *
 
 
 class PojistenecForm(forms.ModelForm):
@@ -27,3 +27,9 @@ class LoginForm(forms.Form):
 
     class Meta:
         fields = ['email', 'password']
+        
+
+class PojisteniForm(forms.ModelForm):
+    class Meta:
+        model = SeznamPojisteni
+        fields = ['pojistenec', 'typ_pojisteni', 'predmet_pojisteni', 'hodnota_pojisteni', 'plati_od', 'plati_do', 'poznamka']

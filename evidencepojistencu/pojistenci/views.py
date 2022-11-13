@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, reverse
 from django.views import generic
 from .models import *
-from .forms import PojistenecForm, UzivatelForm, LoginForm
+from .forms import *
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -28,7 +28,7 @@ class AktualPojistenec(generic.DetailView):
         try:
             pojistenec = Pojistenec.objects.get(id=pk)
         except:
-            return redirect('pojistenci')
+            return redirect('home')
         pojistky = SeznamPojisteni.objects.filter(pojistenec_id=pk)
         context = {'pojistenec':pojistenec,'pojistky':pojistky}
         return render(request, self.template_name, context)
@@ -39,14 +39,13 @@ class AktualPojistenec(generic.DetailView):
                 return redirect('edit_pojistenec', pk=pk)
             else:
                 if not request.user.is_admin:
-                    messages.info(
-                        request, 'Nemáš práva pro smazání pojištěnce.')
-                    return redirect(reverse('pojistenci'))
+                    messages.info(request, 'Nemáš práva pro smazání pojištěnce.')
+                    return redirect(reverse('home'))
                 else:
                     Pojistenec(id=pk).delete()
         else:
             pass
-        return redirect(reverse('pojistenci'))
+        return redirect(reverse('home'))
 
 
 class CreatePojistenec(generic.edit.CreateView):
@@ -57,7 +56,7 @@ class CreatePojistenec(generic.edit.CreateView):
     def get(self, request):
         if not request.user.is_admin:
             messages.info(request, 'Nemáš práva přidat nového pojištěnce.')
-            return redirect(reverse('pojistenci'))
+            return redirect(reverse('home'))
         form = self.form_class(None)
         return render(request, self.template_name, {'form': form})
 
@@ -65,11 +64,11 @@ class CreatePojistenec(generic.edit.CreateView):
     def post(self, request):
         if not request.user.is_admin:
             messages.info(request, 'Nemáš práva přidat nového pojištěnce.')
-            return redirect(reverse('pojistenci'))
+            return redirect(reverse('home'))
         form = self.form_class(request.POST)
         if form.is_valid():
             form.save(commit=True)
-            return redirect('pojistenci')
+            return redirect('home')
         return render(request, self.template_name, {"form": form})
 
 
@@ -80,9 +79,8 @@ class UzivatelViewRegister(generic.edit.CreateView):
 
     def get(self, request):
         if request.user.is_authenticated:
-            messages.info(
-                request, 'Už jsi přihlášený, nemůžeš se registrovat.')
-            return redirect(reverse('pojistenci'))
+            messages.info(request, 'Už jsi přihlášený, nemůžeš se registrovat.')
+            return redirect(reverse('home'))
         else:
             form = self.form_class(None)
         # dict(nazev=self.nazev_stranky),
@@ -92,7 +90,7 @@ class UzivatelViewRegister(generic.edit.CreateView):
         if request.user.is_authenticated:
             messages.info(
                 request, 'Už jsi přihlášený, nemůžeš se registrovat.')
-            return redirect(reverse('pojistenci'))
+            return redirect(reverse('home'))
         form = self.form_class(request.POST)
         if form.is_valid():
             uzivatel = form.save(commit=False)
@@ -100,7 +98,7 @@ class UzivatelViewRegister(generic.edit.CreateView):
             uzivatel.set_password(password)
             uzivatel.save()
             login(request, uzivatel)
-            return redirect('pojistenci')
+            return redirect('home')
         return render(request, self.template_name, {'form': form})
 
 
@@ -111,7 +109,7 @@ class UzivatelViewLogin(generic.edit.CreateView):
     def get(self, request):
         if request.user.is_authenticated:
             messages.info(request, 'Už jsi přihlášený.')
-            return redirect(reverse('pojistenci'))
+            return redirect(reverse('home'))
         else:
             form = self.form_class(None)
         return render(request, self.template_name, {'form': form})
@@ -119,7 +117,7 @@ class UzivatelViewLogin(generic.edit.CreateView):
     def post(self, request):
         if request.user.is_authenticated:
             messages.info(request, 'Už jsi přihlášený.')
-            return redirect(reverse('pojistenci'))
+            return redirect(reverse('home'))
         form = self.form_class(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
@@ -127,7 +125,7 @@ class UzivatelViewLogin(generic.edit.CreateView):
             user = authenticate(email=email, password=password)
             if user:
                 login(request, user)
-                return redirect('pojistenci')
+                return redirect('home')
             else:
                 messages.error(request, 'Tento účet neexistuje.')
 
@@ -150,20 +148,20 @@ class EditPojistenec(LoginRequiredMixin, generic.edit.CreateView):
         
         if not request.user.is_admin:
             messages.info(request, 'Nemáš práva na úpravu pojištěnce.')
-            return redirect(reverse('pojistenci'))
+            return redirect(reverse('home'))
         try:
             pojistenec = Pojistenec.objects.get(pk=pk)
             
         except:
             messages.error(request, 'Tento pojištěnec neexistuje.')
-            return redirect('pojistenci')
+            return redirect('home')
         form = self.form_class(instance=pojistenec)
         return render(request, self.template_name, {'form': form})
 
     def post(self, request, pk):
         if not request.user.is_admin:
             messages.info(request, 'Nemáš práva pro úpravu pojištěnce.')
-            return redirect(reverse('pojistenci'))
+            return redirect(reverse('home'))
         form = self.form_class(request.POST)
 
         if form.is_valid():
@@ -179,7 +177,7 @@ class EditPojistenec(LoginRequiredMixin, generic.edit.CreateView):
                 pojistenec = Pojistenec.objects.get(pk=pk)
             except:
                 messages.error(request, 'Tento pojištěnec neexistuje.')
-                return redirect(reverse('pojistenci'))
+                return redirect(reverse('home'))
             pojistenec.jmeno = jmeno
             pojistenec.prijmeni = prijmeni
             pojistenec.email = email
@@ -191,7 +189,7 @@ class EditPojistenec(LoginRequiredMixin, generic.edit.CreateView):
             pojistenec.save()
         return redirect('pojistenec_detail', pk=pojistenec.id)
 
-
+# pouze funkcí bez třídy
 """def seznampojistek(request, pk):
     
     pojistenecakt = Pojistenec.objects.get(id=pk)
@@ -215,7 +213,7 @@ class AktualPojistenec2(generic.DetailView):
         try:
             pojistenec = Pojistenec.objects.get(id=pk)
         except:
-            return redirect('pojistenci')
+            return redirect('home')
         pojistky = SeznamPojisteni.objects.filter(pojistenec_id=pk)
         context = {'pojistenec':pojistenec,'pojistky':pojistky}
         return render(request, self.template_name, context)
@@ -228,10 +226,85 @@ class AktualPojistenec2(generic.DetailView):
                 if not request.user.is_admin:
                     messages.info(
                         request, 'Nemáš práva pro smazání pojištěnce.')
-                    return redirect(reverse('pojistenci'))
+                    return redirect('pojistenec_detail', pk=pk)
                 else:
                     self.get_object().delete()
+                    messages.info(request, 'Pojištěnec byl smazán včetně jeho zaevidovaných pojištění.')
         else:
-            pass
-        return redirect(reverse('pojistenci'))
+            messages.info(request, 'Pojištěnec byl smazán včetně jeho zaevidovaných pojištění.')
+        return redirect(reverse('home'))
+    
+    
+    
+class CreatePojisteni(generic.edit.CreateView):
+    form_class = PojisteniForm
+    template_name = 'pojistenci/create_pojisteni.html'
+
+    # Metoda pro GET request, zobrazí pouze formulář
+    def get(self, request, pk):
+        if not request.user.is_admin:
+            messages.info(request, 'Nemáš práva přidat nové pojištění.')
+            return redirect(reverse('pojistenec_detail', pk=pk))
+        form = self.form_class(None)
+        return render(request, self.template_name, {'form': form})
+
+    # Metoda pro POST request, zkontroluje formulář; pokud je validní, vytvoří nového pojištěnce; pokud ne, zobrazí formulář s chybovou hláškou
+    def post(self, request, pk):
+        if not request.user.is_admin:
+            messages.info(request, 'Nemáš práva přidat nové pojištění.')
+            return redirect(reverse('pojistenec_detail', pk=pk))
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            form.save(commit=True)
+            return redirect('pojistenec_detail', pk=pk)
+        return render(request, self.template_name, {"form": form})
+    
+    
+class UpdatePojisteni(LoginRequiredMixin, generic.edit.CreateView):
+        form_class = PojisteniForm
+        template_name = 'pojistenci/update_pojisteni.html'
+        
+        
+        def get(self, request, pk):
+            
+            if not request.user.is_admin:
+                messages.info(request, 'Nemáš práva na úpravu pojištění.')
+                return redirect('home')
+            try:
+                
+                pojisteni = SeznamPojisteni.objects.get(pk=pk)
+            except:
+                messages.error(request, 'Tento pojištěnec neexistuje.')
+                return redirect('pojistenec_detail', pk=pojisteni.id)
+            form = self.form_class(instance=pojisteni)
+            return render(request, self.template_name, {'form': form})
+        
+        def post(self, request, pk):
+            if not request.user.is_admin:
+                messages.info(request, 'Nemáš práva pro úpravu pojištění.')
+                return redirect(reverse('pojistenec_detail', pk=pojistenec.id))
+            form = self.form_class(request.POST)
+
+            if form.is_valid():
+                pojistenec = form.cleaned_data['pojistenec']
+                typ_pojisteni = form.cleaned_data['typ_pojisteni']
+                predmet_pojisteni = form.cleaned_data['predmet_pojisteni']
+                hodnota_pojisteni = form.cleaned_data['hodnota_pojisteni']
+                plati_od = form.cleaned_data['plati_od']
+                plati_do = form.cleaned_data['plati_do']
+                poznamka = form.cleaned_data['poznamka']
+                try:
+                    pojisteni = SeznamPojisteni.objects.get(pk=pk)
+                except:
+                    messages.error(request, 'Tento pojištěnec neexistuje.')
+                    return redirect(reverse('home'))
+                pojisteni.pojistenec = pojistenec
+                pojisteni.typ_pojisteni = typ_pojisteni
+                pojisteni.predmet_pojisteni = predmet_pojisteni
+                pojisteni.hodnota_pojisteni = hodnota_pojisteni
+                pojisteni.plati_od = plati_od
+                pojisteni.plati_do = plati_do
+                pojisteni.poznamka = poznamka
+                pojisteni.save()
+            return redirect('pojistenec_detail', pk=pojistenec.id)
 
