@@ -189,20 +189,8 @@ class EditPojistenec(LoginRequiredMixin, generic.edit.CreateView):
             pojistenec.save()
         return redirect('pojistenec_detail', pk=pojistenec.id)
 
-# pouze funkcí bez třídy
-"""def seznampojistek(request, pk):
-    
-    pojistenecakt = Pojistenec.objects.get(id=pk)
-    pojistky = SeznamPojisteni.objects.filter(pojistenec_id=pk)
-        
-    template_name = 'pojistenci/pojistenec_detail_copy.html'
-    context = {'pojistenecakt':pojistenecakt,'pojistky':pojistky}
-    
-    return render(request, template_name, context)"""
 
-
-
-class AktualPojistenec2(generic.DetailView):
+class AktualPojistenec(generic.DetailView):
 
     model = SeznamPojisteni
     template_name = 'pojistenci/pojistenec_detail.html'
@@ -307,4 +295,18 @@ class UpdatePojisteni(LoginRequiredMixin, generic.edit.CreateView):
                 pojisteni.poznamka = poznamka
                 pojisteni.save()
             return redirect('pojistenec_detail', pk=pojistenec.id)
+
+        
+def delete_pojisteni(request, pk):
+    pojisteni = SeznamPojisteni.objects.get(pk=pk)
+    pojistenec = pojisteni.pojistenec.id
+    
+    
+    if request.method == "POST":
+        pojistenec = SeznamPojisteni.objects.get(id=pk)
+        pojisteni.delete()
+        return redirect('pojistenec_detail', pk=pojistenec.id)
+    
+    context = {'pojisteni':pojisteni, 'pojistenec':pojistenec}
+    return render(request, 'pojistenci/delete_pojisteni.html', context)
 

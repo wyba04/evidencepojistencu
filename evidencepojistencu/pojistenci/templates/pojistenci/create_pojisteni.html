@@ -6,10 +6,9 @@
 <form action="" method="POST">
     {% csrf_token %}
     {{ form|crispy }} <br>
-    <input class="btn btn-sm btn-success" type="submit" value="Uložit">  <button class="btn btn-sm btn-warning"  name="back_pojistenec">
-        Zrušit
-      </button>
+    <input class="btn btn-sm btn-success" type="submit" value="Uložit">  <button class="btn btn-sm btn-warning" href="" name="back_pojistenec">Zrušit</button>
 </form>
+
 
 <br>
 <br>

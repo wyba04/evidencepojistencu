@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h4><strong> Opravdu chcete smazat toto pojištění:</strong><br></h4>
+<hr>
+<h5>Pojištěnec: <strong>{{pojisteni.pojistenec.jmeno}} {{pojisteni.pojistenec.prijmeni}} {{pojisteni.pojistenec.id}}</strong></h5>
+<h5>Číslo pojistění: {{pojisteni.id}}</h5>
+<hr>
+<h6>Typ pojistění: </h6>
+<input class="form-control" type="text" value="{{pojisteni.typ_pojisteni}}" aria-label="pouze pro čtení" readonly>
+<h6>Předmět pojištění: </h6>
+<input class="form-control" type="text" value="{{pojisteni.predmet_pojisteni}}" aria-label="pouze pro čtení" readonly>
+<h6>Hodnota: </h6>
+<input class="form-control" type="text" value="{{pojisteni.hodnota_pojisteni}}" aria-label="pouze pro čtení" readonly>
+<h6>Platí od: </h6>
+<input class="form-control" type="text" value="{{pojisteni.plati_od}}" aria-label="pouze pro čtení" readonly>
+<h6>Platí do: </h6>
+<input class="form-control" type="text" value="{{pojisteni.plati_do}}" aria-label="pouze pro čtení" readonly>
+<h6>Poznámka: </h6>
+<input class="form-control" type="text" value="{{pojisteni.poznamka}}" aria-label="pouze pro čtení" readonly>
+<h6>Vytvořeno: </h6>
+<input class="form-control" type="datetime" value="{{pojisteni.date_created}}" aria-label="pouze pro čtení" readonly>
+<br>
+
+<form action="{% url 'delete_pojisteni' pojisteni.id %}" method="POST">
+    {%csrf_token%}
+    
+    <a class="btn btn-sm btn-warning" href="{% url 'pojistenec_detail' pojisteni.pojistenec.id %}">Zpět</a>
+
+    <input class="btn btn-sm btn-danger" type="submit" value="Smazat" name="Confirm">
+</form>
+
+{% endblock %}

@@ -68,9 +68,8 @@ class SeznamPojisteni(models.Model):
         verbose_name = 'Seznam pojištění'
         verbose_name_plural = 'Seznam pojištění'
 
-
-   # def __str__(self) -> str:
-   #     return f'Pojištěnec: {self.pojistenec.jmeno} {self.pojistenec.prijmeni} | Pojištění: {self.typ_pojisteni.nazev_pojisteni} | Částka: {self.hodnota_pojisteni}'
+    def __str__(self):
+        return f'{self.typ_pojisteni.nazev_pojisteni} | Předmět pojištění: {self.predmet_pojisteni} | Částka: {self.hodnota_pojisteni}'
 
 
 

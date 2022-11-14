@@ -16,5 +16,5 @@ urlpatterns = [
          views.AktualPojistenec.as_view(), name='pojistenec_detail'),
     path('create_pojisteni/<str:pk>', views.CreatePojisteni.as_view(), name='create_pojisteni'),
     path('update_pojisteni/<str:pk>', views.UpdatePojisteni.as_view(), name='update_pojisteni'),
-
+    path('delete_pojisteni/<str:pk>', views.delete_pojisteni, name='delete_pojisteni'),
 ]
