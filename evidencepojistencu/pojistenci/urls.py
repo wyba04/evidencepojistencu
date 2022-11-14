@@ -11,7 +11,7 @@ urlpatterns = [
     path('login/', views.UzivatelViewLogin.as_view(), name='login'),
     path('logout/', views.logout_user, name='logout'),
     path('register/', views.UzivatelViewRegister.as_view(), name='registrace'),
-    path('<str:pk>/edit/', views.EditPojistenec.as_view(), name='edit_pojistenec'),
+    path('edit/<str:pk>/', views.EditPojistenec.as_view(), name='edit_pojistenec'),
     path('pojistenec_detail/<str:pk>/',
          views.AktualPojistenec.as_view(), name='pojistenec_detail'),
     path('create_pojisteni/<str:pk>', views.CreatePojisteni.as_view(), name='create_pojisteni'),

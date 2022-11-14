@@ -1,12 +1,27 @@
 {% extends 'base.html' %} {% block content %}
 <h3>Detail evidence pojištění:</h3>
 <hr />
-<h1>{{pojistenec.jmeno}} {{pojistenec.prijmeni}}</h1>
-<p>Tel: {{pojistenec.telefon}} Email: {{pojistenec.email}}</p>
-<h4>
-  Adresa: {{pojistenec.ulice_cp}}, {{pojistenec.mesto}}, {{pojistenec.psc}},
-  {{pojistenec.stat}}
-</h4>
+<div class="row">
+  <div class="col-md">
+    <div class="card card-body">
+      <h1>{{pojistenec.jmeno}} {{pojistenec.prijmeni}}</h1>
+      <p>Tel: {{pojistenec.telefon}} Email: {{pojistenec.email}}</p>
+      <h4>
+        Adresa: {{pojistenec.ulice_cp}}, {{pojistenec.mesto}}, {{pojistenec.psc}},
+        {{pojistenec.stat}}
+      </h4>
+    </div>
+  </div>
+  <div class="col-md">
+    <div class="card card-body">
+      <h5>Počet pojištění:</h5>
+      <hr>
+      <h1>{{pocet_pojistek}}</h1>
+
+    </div>
+  </div>
+</div>
+<br>
 <form method="POST">
   {% csrf_token %} {% if user.is_admin %}<a class="btn btn-primary btn-sm btn-block" href={% url 'create_pojisteni' pojistenec.id%}>Nové pojištění</a>
   <button class="btn btn-sm btn-info"  name="edit">

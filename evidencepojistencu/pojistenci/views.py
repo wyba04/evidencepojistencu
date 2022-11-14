@@ -194,6 +194,7 @@ class AktualPojistenec(generic.DetailView):
 
     model = SeznamPojisteni
     template_name = 'pojistenci/pojistenec_detail.html'
+    
 
 
     def get(self, request, pk):
@@ -203,7 +204,8 @@ class AktualPojistenec(generic.DetailView):
         except:
             return redirect('home')
         pojistky = SeznamPojisteni.objects.filter(pojistenec_id=pk)
-        context = {'pojistenec':pojistenec,'pojistky':pojistky}
+        total_pojisteni = pojistky.count()
+        context = {'pojistenec':pojistenec,'pojistky':pojistky, 'pocet_pojistek':total_pojisteni}
         return render(request, self.template_name, context)
 
     def post(self, request, pk):

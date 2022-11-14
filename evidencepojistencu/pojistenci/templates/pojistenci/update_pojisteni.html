@@ -6,7 +6,7 @@
 <form action="" method="POST">
     {% csrf_token %}
     {{ form|crispy }} <br>
-    <input class="btn btn-sm btn-success" type="submit" name="Uložit"> 
+    <input class="btn btn-sm btn-success" type="submit" value="Uložit" name="Uložit"> <a class="btn btn-sm btn-warning" href="{% url 'home' %}">Zpět na seznam</a>
 </form>
 <br>
 <br>

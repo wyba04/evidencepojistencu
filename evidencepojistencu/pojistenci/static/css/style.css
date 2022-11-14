@@ -26,7 +26,7 @@ nav{
 .nav_item{
     margin-left: 10px;
     margin-right: 10px;
-    background-color: rgb(0, 153, 255);
+    background-color: rgb(161, 161, 161);
     height: 100px;
     width: 100px;
     text-align: center;
@@ -46,7 +46,7 @@ footer{
     height: 50;
     background-color: rgb(3, 48, 196);
     text-align: center;
-    line-height: 70px;
+    line-height: 50px;
     vertical-align: middle;
     bottom: 0;
 }
