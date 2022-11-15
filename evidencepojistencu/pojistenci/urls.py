@@ -18,4 +18,6 @@ urlpatterns = [
     path('update_pojisteni/<str:pk>', views.UpdatePojisteni.as_view(), name='update_pojisteni'),
     path('delete_pojisteni/<str:pk>', views.delete_pojisteni, name='delete_pojisteni'),
     path('delete_pojistenec/<str:pk>', views.delete_pojistenec, name='delete_pojistenec'),
+    path('pojisteni_detail/<str:pk>/', views.detail_pojisteni, name='pojisteni_detail'),
+    #path('pojisteni_detail/<str:pojid>/<str:pk>/', views.detail_pojisteni, name='pojisteni_detail'),
 ]

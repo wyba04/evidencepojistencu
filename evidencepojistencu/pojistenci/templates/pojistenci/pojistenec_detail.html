@@ -55,7 +55,7 @@
     <td>{{pojistka.plati_od}}</td>
     <td>{{pojistka.plati_do}}</td>
     <td>{{pojistka.poznamka}}</td>
-    <td>{% if user.is_admin %}<a class="btn btn-sm btn-info" href="{% url 'update_pojisteni' pojistka.id %}">Upravit</a> 
+    <td><a class="btn btn-sm btn-light" href="{% url 'pojisteni_detail' pojistka.id %}">Zobrazit</a> {% if user.is_admin %}<a class="btn btn-sm btn-info" href="{% url 'update_pojisteni' pojistka.id %}">Upravit</a> 
     <a class="btn btn-sm btn-danger" href="{% url 'delete_pojisteni' pojistka.id %}">Smazat</a>{% endif %}</td>
   
 

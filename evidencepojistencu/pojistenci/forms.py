@@ -33,3 +33,9 @@ class PojisteniForm(forms.ModelForm):
     class Meta:
         model = SeznamPojisteni
         fields = ['pojistenec', 'typ_pojisteni', 'predmet_pojisteni', 'hodnota_pojisteni', 'plati_od', 'plati_do', 'poznamka']
+
+
+class PojistnaUdalostForm(forms.ModelForm):
+    class Meta:
+        model = PojistneUdalosti
+        fields = ['pojisteni', 'datum_udalosti', 'cas_udalosti', 'popis_skody', 'vycisleni_skody']

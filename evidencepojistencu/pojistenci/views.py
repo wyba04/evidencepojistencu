@@ -287,7 +287,7 @@ def delete_pojistenec(request, pk):
     total_pojisteni = pojistky.count()
     
     
-    if request.method == "POST":
+    if request.method == 'POST':
         pojistenec = Pojistenec.objects.get(id=pk)
         
         pojistenec.delete()
@@ -297,3 +297,65 @@ def delete_pojistenec(request, pk):
     context = {'pojistenec':pojistenec, 'pojistky':pojistky, 'pocet_pojistek':total_pojisteni}
     return render(request, 'pojistenci/delete_pojistenec.html', context)
 
+
+
+def detail_pojisteni(request, pk):
+    
+    pojistky = SeznamPojisteni.objects.get(pk=pk)
+    template_name = 'pojistenci/pojisteni_detail.html'
+    pojistne_udalosti = PojistneUdalosti.objects.filter(pojisteni_id=pk)
+    pocet_udalosti = pojistne_udalosti.count()
+    context = {'pojistky':pojistky, 'pojistne_udalosti':pojistne_udalosti, 'pocet_udalosti':pocet_udalosti}
+
+    return render(request, template_name, context)
+    
+    
+    
+    
+    
+    
+    
+"""class AktualPojisteni(generic.DeleteView):
+    model = SeznamPojisteni
+    template_name = 'pojistenci/pojisteni_detail.html'    
+
+    def get(self, request, pk):
+        try:
+            pojistky = SeznamPojisteni.objects.get(pk=pk)
+        except:
+            return redirect('home')
+        
+        
+        pojistky = SeznamPojisteni.objects.filter(id=pk)
+        context = {'pojistky':pojistky}
+        print (pojistky)
+        return render(request, self.template_name, context)
+    
+
+
+# doplnit po zobrazení pojištění
+class CreatePojistnaUdalost(generic.edit.CreateView):
+    form_class = PojistnaUdalostForm
+    template_name = 'pojistenci/create_pojisteni.html'
+
+    # Metoda pro GET request, zobrazí pouze formulář
+    def get(self, request, pk):
+        
+        
+        if not request.user.is_admin:
+            messages.info(request, 'Nemáš práva přidat nové pojištění.')
+            return redirect(reverse('pojistenec_detail', pk=pk))
+        form = self.form_class(None)
+        return render(request, self.template_name, {'form': form})
+
+    # Metoda pro POST request, zkontroluje formulář; pokud je validní, vytvoří nového pojištěnce; pokud ne, zobrazí formulář s chybovou hláškou
+    def post(self, request, pk):
+        if not request.user.is_admin:
+            messages.info(request, 'Nemáš práva přidat nové pojištění.')
+            return redirect(reverse('pojistenec_detail', pk=pk))
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            form.save(commit=True)
+            return redirect('pojistenec_detail', pk=pk)
+        return render(request, self.template_name, {"form": form})
+"""

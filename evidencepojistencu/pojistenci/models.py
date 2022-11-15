@@ -69,8 +69,24 @@ class SeznamPojisteni(models.Model):
         verbose_name_plural = 'Seznam pojištění'
 
     def __str__(self):
-        return f'{self.typ_pojisteni.nazev_pojisteni} | Předmět pojištění: {self.predmet_pojisteni} | Částka: {self.hodnota_pojisteni}'
+        return f'{self.pojistenec.jmeno} {self.pojistenec.prijmeni} | {self.typ_pojisteni.nazev_pojisteni} | Předmět pojištění: {self.predmet_pojisteni} | Částka: {self.hodnota_pojisteni}'
 
+
+class PojistneUdalosti(models.Model):
+    pojisteni = models.ForeignKey(SeznamPojisteni, null=True, on_delete=models.CASCADE, verbose_name='Pojištění')
+    datum_udalosti = models.CharField(max_length=10, null=True, verbose_name='Datum události')
+    cas_udalosti = models.CharField(max_length=10, null=True, verbose_name='Čas události')
+    popis_skody = models.TextField(null=True, verbose_name='Popis škodní údálosti')
+    vycisleni_skody = models.CharField(max_length=10, null=True, verbose_name='Vyčíslení hodnoty škody')
+    
+    class Meta:
+        verbose_name = 'Pojistná událost'
+        verbose_name_plural = 'Pojistné události'
+        
+    def __str__(self):
+        return f'{self.pojisteni.pojistenec.jmeno} {self.pojisteni.pojistenec.prijmeni} | Pojistka č: {self.pojisteni.id}'
+    
+    
 
 
 class UzivatelManager(BaseUserManager):

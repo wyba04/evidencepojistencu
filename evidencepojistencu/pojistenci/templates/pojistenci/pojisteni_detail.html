@@ -1,0 +1,54 @@
+{% extends 'base.html' %} {% block content %}
+<h3>Detail pojištění:</h3>
+<hr />
+<div class="row">
+  <div class="col-md">
+    <div class="card card-body">
+      <h1>{{pojistky.pojistenec.jmeno}} {{pojistky.pojistenec.prijmeni}}</h1>
+      <p>Tel: {{pojistky.pojistenec.telefon}}  Email: {{pojistky.pojistenec.email}}  </p>
+      <h4>
+        Adresa: {{pojistky.pojistenec.ulice_cp}}, {{pojistky.pojistenec.mesto}}, {{pojistky.pojistenec.psc}},
+        {{pojistky.pojistenec.stat}}
+        
+
+      </h4>
+    </div>
+  </div>
+  <div class="col-md">
+    <div class="card card-body">
+      <h5>Počet pojistných událostí:  <strong>{{pocet_udalosti}}</strong></h5>
+      <hr>
+      <br>
+      
+
+    </div>
+  </div>
+</div>
+<br>
+
+<table class="table table-hover">
+  <tr>
+    <th>Pojistná událost č. </th>
+    <th>Datum události</th>
+    <th>Čas události</th>
+    <th>Vyčíslení škody</th>
+    <th>Popis škody</th>
+    <th></th>
+    
+  </tr>
+  {% for udalost in pojistne_udalosti %}
+  <tr>
+    <td>{{udalost.id}}</td>
+    <td>{{udalost.datum_udalosti}}</td>
+    <td>{{udalost.cas_udalosti}}</td>
+    <td>{{udalost.vycisleni_skody}}</td>
+    <td>{{udalost.popis_skody}}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<br>
+<a class="btn btn-sm btn-warning" href="{% url 'home' %}">Zpět na seznam</a> <a class="btn btn-sm btn-warning" href={% url 'pojistenec_detail' pojistky.pojistenec.id %}>Zpět na pojištěnce</a>
+
+
+{% endblock %}

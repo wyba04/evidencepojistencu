@@ -58,4 +58,5 @@ admin.site.register(TypPojisteni)
 admin.site.register(SeznamPojisteni)
 admin.site.register(Uzivatel, UzivatelAdmin)
 admin.site.register(Stat)
+admin.site.register(PojistneUdalosti)
 
