@@ -308,54 +308,41 @@ def detail_pojisteni(request, pk):
     context = {'pojistky':pojistky, 'pojistne_udalosti':pojistne_udalosti, 'pocet_udalosti':pocet_udalosti}
 
     return render(request, template_name, context)
-    
-    
-    
-    
-    
-    
-    
-"""class AktualPojisteni(generic.DeleteView):
-    model = SeznamPojisteni
-    template_name = 'pojistenci/pojisteni_detail.html'    
-
-    def get(self, request, pk):
-        try:
-            pojistky = SeznamPojisteni.objects.get(pk=pk)
-        except:
-            return redirect('home')
-        
-        
-        pojistky = SeznamPojisteni.objects.filter(id=pk)
-        context = {'pojistky':pojistky}
-        print (pojistky)
-        return render(request, self.template_name, context)
-    
 
 
-# doplnit po zobrazení pojištění
-class CreatePojistnaUdalost(generic.edit.CreateView):
+class CreateUdalost(generic.edit.CreateView): 
     form_class = PojistnaUdalostForm
-    template_name = 'pojistenci/create_pojisteni.html'
-
-    # Metoda pro GET request, zobrazí pouze formulář
+    template_name = 'pojistenci/create_udalost.html'
+    
+    
     def get(self, request, pk):
-        
-        
         if not request.user.is_admin:
-            messages.info(request, 'Nemáš práva přidat nové pojištění.')
-            return redirect(reverse('pojistenec_detail', pk=pk))
+            messages.info(request, 'Nemáš práva přidat novou událost.')
+            return redirect(reverse('pojisteni_detail', pk=pk))
         form = self.form_class(None)
         return render(request, self.template_name, {'form': form})
-
-    # Metoda pro POST request, zkontroluje formulář; pokud je validní, vytvoří nového pojištěnce; pokud ne, zobrazí formulář s chybovou hláškou
+    
+    
     def post(self, request, pk):
         if not request.user.is_admin:
             messages.info(request, 'Nemáš práva přidat nové pojištění.')
-            return redirect(reverse('pojistenec_detail', pk=pk))
+            return redirect(reverse('pojisteni_detail', pk=pk))
         form = self.form_class(request.POST)
         if form.is_valid():
             form.save(commit=True)
-            return redirect('pojistenec_detail', pk=pk)
+            return redirect('pojisteni_detail', pk=pk)
         return render(request, self.template_name, {"form": form})
-"""
+"""    
+    pojistky = SeznamPojisteni.objects.get(pk=pk)
+    template_name = 'pojistenci/pojisteni_detail.html'
+    pojistne_udalosti = PojistneUdalosti.objects.filter(pojisteni_id=pk)
+    pocet_udalosti = pojistne_udalosti.count()
+    context = {'pojistky':pojistky, 'pojistne_udalosti':pojistne_udalosti, 'pocet_udalosti':pocet_udalosti}
+
+    return render(request, template_name, context)
+"""    
+    
+    
+    
+    
+ 
