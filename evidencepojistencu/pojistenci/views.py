@@ -16,38 +16,6 @@ class PojistenecIndex(generic.ListView):
         # řazení od nejmenšího po největší
         return Pojistenec.objects.all().order_by('-prijmeni')
 
-
-class AktualPojistenec(generic.DetailView):
-
-    model = SeznamPojisteni
-    template_name = 'pojistenci/pojistenec_detail.html'
-
-
-    def get(self, request, pk):
-        
-        try:
-            pojistenec = Pojistenec.objects.get(id=pk)
-        except:
-            return redirect('home')
-        pojistky = SeznamPojisteni.objects.filter(pojistenec_id=pk)
-        context = {'pojistenec':pojistenec,'pojistky':pojistky}
-        return render(request, self.template_name, context)
-
-    def post(self, request, pk):
-        if request.user.is_authenticated:
-            if 'edit' in request.POST:
-                return redirect('edit_pojistenec', pk=pk)
-            else:
-                if not request.user.is_admin:
-                    messages.info(request, 'Nemáš práva pro smazání pojištěnce.')
-                    return redirect(reverse('home'))
-                else:
-                    Pojistenec(id=pk).delete()
-        else:
-            pass
-        return redirect(reverse('home'))
-
-
 class CreatePojistenec(generic.edit.CreateView):
     form_class = PojistenecForm
     template_name = 'pojistenci/create_pojistenec.html'
@@ -190,7 +158,7 @@ class EditPojistenec(LoginRequiredMixin, generic.edit.CreateView):
         return redirect('pojistenec_detail', pk=pojistenec.id)
 
 
-class AktualPojistenec(generic.DetailView):
+class AktualPojistenec2(generic.DetailView):
 
     model = SeznamPojisteni
     template_name = 'pojistenci/pojistenec_detail.html'
@@ -218,12 +186,13 @@ class AktualPojistenec(generic.DetailView):
                         request, 'Nemáš práva pro smazání pojištěnce.')
                     return redirect('pojistenec_detail', pk=pk)
                 else:
-                    self.get_object().delete()
-                    messages.info(request, 'Pojištěnec byl smazán včetně jeho zaevidovaných pojištění.')
+                    return redirect('delete_pojistenec', pk=pk)
+                    #self.get_object().delete()
+                    #messages.info(request, 'Pojištěnec byl smazán včetně jeho zaevidovaných pojištění.')
         else:
-            messages.info(request, 'Pojištěnec byl smazán včetně jeho zaevidovaných pojištění.')
+            pass
         return redirect(reverse('home'))
-    
+
     
     
 class CreatePojisteni(generic.edit.CreateView):
@@ -272,7 +241,7 @@ class UpdatePojisteni(LoginRequiredMixin, generic.edit.CreateView):
         def post(self, request, pk):
             if not request.user.is_admin:
                 messages.info(request, 'Nemáš práva pro úpravu pojištění.')
-                return redirect(reverse('pojistenec_detail', pk=pojistenec.id))
+                return redirect(reverse('pojistenec_detail', pk=pk))
             form = self.form_class(request.POST)
 
             if form.is_valid():
@@ -303,7 +272,6 @@ def delete_pojisteni(request, pk):
     pojisteni = SeznamPojisteni.objects.get(pk=pk)
     pojistenec = pojisteni.pojistenec.id
     
-    
     if request.method == "POST":
         pojistenec = SeznamPojisteni.objects.get(id=pk)
         pojisteni.delete()
@@ -311,4 +279,21 @@ def delete_pojisteni(request, pk):
     
     context = {'pojisteni':pojisteni, 'pojistenec':pojistenec}
     return render(request, 'pojistenci/delete_pojisteni.html', context)
+
+
+def delete_pojistenec(request, pk):
+    pojistenec = Pojistenec.objects.get(pk=pk)
+    pojistky = SeznamPojisteni.objects.filter(pojistenec_id=pk)
+    total_pojisteni = pojistky.count()
+    
+    
+    if request.method == "POST":
+        pojistenec = Pojistenec.objects.get(id=pk)
+        
+        pojistenec.delete()
+        print(pojistenec.id)
+        return redirect('home')
+    
+    context = {'pojistenec':pojistenec, 'pojistky':pojistky, 'pocet_pojistek':total_pojisteni}
+    return render(request, 'pojistenci/delete_pojistenec.html', context)
 

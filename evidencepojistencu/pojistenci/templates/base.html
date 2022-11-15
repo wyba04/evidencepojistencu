@@ -24,14 +24,13 @@
     <div "container">
         <nav class="navbar navbar-expand-lg bg-light">
             <div class="container-fluid">
-                <a class="nav-item" href={% url "home" %}>Seznam pojištěnců</a>
+                <a class="navbar-brand" href={% url "home" %}>Seznam pojištěnců</a>
                 {% if not user.is_authenticated %}<a class="navbar-brand" href={% url "registrace" %}>Registrace</a>{% endif %}
                 {% if user.is_admin %}<a class="navbar-brand" href={% url "novy_pojistenec" %}>Nový pojištěnec</a>{% endif %}
                 {% if not user.is_authenticated %}<a class="navbar-brand" href={% url "login" %}>Login</a>{% endif %}
                 {% if user.is_authenticated %}<a class="navbar-brand" href={% url "logout" %}>Logout</a>{% endif %}
-            <!-- {% if user.is_admin %}<div class="nav_item"><a href={% url "logout" %}>Logout</a></div>{% endif %} -->
-
-                <div class="text-center">{{request.user.email}}</div>
+            
+                <div class="navbar-brand">{{request.user.email}}</div>
             </div>
         </nav>
     </div>

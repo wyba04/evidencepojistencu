@@ -16,18 +16,23 @@
     <div class="card card-body">
       <h5>Počet pojištění:</h5>
       <hr>
-      <h1>{{pocet_pojistek}}</h1>
+      <br>
+      <h3>{{pocet_pojistek}}</h3>
 
     </div>
   </div>
 </div>
 <br>
 <form method="POST">
-  {% csrf_token %} {% if user.is_admin %}<a class="btn btn-primary btn-sm btn-block" href={% url 'create_pojisteni' pojistenec.id%}>Nové pojištění</a>
+  {% csrf_token %}
+  {% if user.is_admin %}<a class="btn btn-primary btn-sm btn-block" href={% url 'create_pojisteni' pojistenec.id%}>Nové pojištění</a>
   <button class="btn btn-sm btn-info"  name="edit">
     Upravit pojištěnce
+  </button>  <button class="btn btn-sm btn-danger"  name="delete">
+    Smazat pojištěnce
   </button>
-  <button class="btn btn-sm btn-danger" name="delete">Smazat pojištěnce</button>{% endif %}
+  <!--<a class="btn btn-sm btn-danger" href="{% url 'delete_pojistenec' pojistenec.id %}">Smazat pojištěnce</a>-->
+  {% endif %}
 </form>
 <hr />
 
@@ -51,7 +56,7 @@
     <td>{{pojistka.plati_do}}</td>
     <td>{{pojistka.poznamka}}</td>
     <td>{% if user.is_admin %}<a class="btn btn-sm btn-info" href="{% url 'update_pojisteni' pojistka.id %}">Upravit</a> 
-    <a class="btn btn-sm btn-danger"  href="{% url 'delete_pojisteni' pojistka.id %}">Smazat</a>{% endif %}</td>
+    <a class="btn btn-sm btn-danger" href="{% url 'delete_pojisteni' pojistka.id %}">Smazat</a>{% endif %}</td>
   
 
   </tr>

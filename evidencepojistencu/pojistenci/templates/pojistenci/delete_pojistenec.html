@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3><strong> Opravdu chcete smazat tohoto pojištěnce (včetně všech pojištění):</strong><br></h3>
+<hr />
+
+<div class="row">
+    <div class="col-md">
+      <div class="card card-body">
+        <h1>{{pojistenec.jmeno}} {{pojistenec.prijmeni}}</h1>
+        <p>Tel: {{pojistenec.telefon}} Email: {{pojistenec.email}}</p>
+        <h4>
+          Adresa: {{pojistenec.ulice_cp}}, {{pojistenec.mesto}}, {{pojistenec.psc}},
+          {{pojistenec.stat}}
+        </h4>
+      </div>
+    </div>
+    <div class="col-md">
+      <div class="card card-body">
+        <h5>Počet pojištění:</h5>
+        <hr>
+        <br>
+        <h3>{{pocet_pojistek}}</h3>
+  
+      </div>
+    </div>
+  </div>
+<br>
+
+<form action="{% url 'delete_pojistenec' pojistenec.id %}" method="POST">
+    {%csrf_token%}
+    
+    <a class="btn btn-sm btn-warning" href="{% url 'pojistenec_detail' pojistenec.id %}">Zpět</a>
+
+    <input class="btn btn-sm btn-danger" type="submit" value="Smazat" name="Confirm">
+
+</form>
+
+{% endblock %}
