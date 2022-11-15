@@ -19,8 +19,7 @@
       <h5>Počet pojistných událostí:  <strong>{{pocet_udalosti}}</strong></h5>
       <hr>
       <br>
-      
-
+      <p><a class="btn btn-primary btn-sm btn-block" href="{% url 'home' %}">Přidat pojistnou událost</a></p>
     </div>
   </div>
 </div>
@@ -43,6 +42,8 @@
     <td>{{udalost.cas_udalosti}}</td>
     <td>{{udalost.vycisleni_skody}}</td>
     <td>{{udalost.popis_skody}}</td>
+    <td>{% if user.is_admin %}<a class="btn btn-sm btn-danger" href="{% url 'home' %}">Smazat událost</a>{% endif %} 
+    </td>
   </tr>
   {% endfor %}
 </table>
