@@ -23,10 +23,11 @@
         {% endfor %}
     {% endif %}
 
+<br>
+<br>
 
 
-
-    <nav class="navbar navbar-expand-lg fixed-top bg-light">
+    <nav class="navbar navbar-expand-lg fixed-top bg-warning">
         <div class="container-fluid">
           <a class="navbar-brand" href={% url "home" %}><img src={% static 'pojistenci/insurance_care.png'%} alt="Insurance care" width="50" height="50">  Evidence pojištěnců</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,25 +58,13 @@
         </div>
       </nav>
 
-    <div "container">
-        <nav class="navbar navbar-expand-lg bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand" href={% url "home" %}>Seznam pojištěnců</a>
-                {% if not user.is_authenticated %}<a class="navbar-brand" href={% url "registrace" %}>Registrace</a>{% endif %}
-                {% if user.is_admin %}<a class="navbar-brand" href={% url "novy_pojistenec" %}>Nový pojištěnec</a>{% endif %}
-                {% if not user.is_authenticated %}<a class="navbar-brand" href={% url "login" %}>Login</a>{% endif %}
-                {% if user.is_authenticated %}<a class="navbar-brand" href={% url "logout" %}>Logout</a>{% endif %}
-            
-                <div class="navbar-brand">{{request.user.email}}</div>
-            </div>
-        </nav>
-    </div>
+
     <div class="content">
     {% block content %}
 
     {% endblock %}
     </div>
-    <footer class="fixed-bottom bg-light">
+    <footer class="fixed-bottom bg-warning">
         Footer
     </footer>
 </body>
