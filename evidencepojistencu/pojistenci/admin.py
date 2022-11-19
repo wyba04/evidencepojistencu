@@ -1,3 +1,4 @@
+
 from django.contrib import admin
 from django import forms
 from .models import *
@@ -59,4 +60,3 @@ admin.site.register(SeznamPojisteni)
 admin.site.register(Uzivatel, UzivatelAdmin)
 admin.site.register(Stat)
 admin.site.register(PojistneUdalosti)
-

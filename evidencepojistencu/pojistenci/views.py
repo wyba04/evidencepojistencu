@@ -176,7 +176,7 @@ class EditPojistenec(LoginRequiredMixin, generic.edit.CreateView):
         return redirect('pojistenec_detail', pk=pojistenec.id)
 
 
-class AktualPojistenec2(generic.DetailView):
+class AktualPojistenec(generic.DetailView):
     """
     View pro zobrazení detailu pojištěnce
     """
