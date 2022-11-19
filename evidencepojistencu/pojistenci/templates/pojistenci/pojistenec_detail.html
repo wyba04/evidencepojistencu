@@ -34,35 +34,34 @@
   <!--<a class="btn btn-sm btn-danger" href="{% url 'delete_pojistenec' pojistenec.id %}">Smazat pojištěnce</a>-->
   {% endif %}
 </form>
-<br>
-<div class="card card-body">
-  <table class="table table-hover">
-    <tr>
-      <th>Typ pojištění</th>
-      <th>Předmět pojištění</th>
-      <th>Pojistná částka</th>
-      <th>Platí od</th>
-      <th>Platí do</th>
-      <th>Poznámka</th>
-      <th></th>
-    </tr>
-    {% for pojistka in pojistky %}
-    <tr>
+<hr />
 
-      <td>{{pojistka.typ_pojisteni}}</td>
-      <td>{{pojistka.predmet_pojisteni}}</td>
-      <td>{{pojistka.hodnota_pojisteni}}</td>
-      <td>{{pojistka.plati_od}}</td>
-      <td>{{pojistka.plati_do}}</td>
-      <td>{{pojistka.poznamka}}</td>
-      <td><a class="btn btn-sm btn-light" href="{% url 'pojisteni_detail' pojistka.id %}">Zobrazit</a> {% if user.is_admin %}<a class="btn btn-sm btn-info" href="{% url 'update_pojisteni' pojistka.id %}">Upravit</a> 
-      <a class="btn btn-sm btn-danger" href="{% url 'delete_pojisteni' pojistka.id %}">Smazat</a>{% endif %}</td>
-    
+<table class="table table-hover">
+  <tr>
+    <th>Typ pojištění</th>
+    <th>Předmět pojištění</th>
+    <th>Pojistná částka</th>
+    <th>Platí od</th>
+    <th>Platí do</th>
+    <th>Poznámka</th>
+    <th></th>
+  </tr>
+  {% for pojistka in pojistky %}
+  <tr>
 
-    </tr>
-    {% endfor %}
-  </table>
-</div>
+    <td>{{pojistka.typ_pojisteni}}</td>
+    <td>{{pojistka.predmet_pojisteni}}</td>
+    <td>{{pojistka.hodnota_pojisteni}}</td>
+    <td>{{pojistka.plati_od}}</td>
+    <td>{{pojistka.plati_do}}</td>
+    <td>{{pojistka.poznamka}}</td>
+    <td><a class="btn btn-sm btn-light" href="{% url 'pojisteni_detail' pojistka.id %}">Zobrazit</a> {% if user.is_admin %}<a class="btn btn-sm btn-info" href="{% url 'update_pojisteni' pojistka.id %}">Upravit</a> 
+    <a class="btn btn-sm btn-danger" href="{% url 'delete_pojisteni' pojistka.id %}">Smazat</a>{% endif %}</td>
+  
+
+  </tr>
+  {% endfor %}
+</table>
 <br>
 <a class="btn btn-sm btn-warning" href="{% url 'home' %}">Zpět na seznam</a>
 

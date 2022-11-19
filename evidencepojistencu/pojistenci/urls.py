@@ -20,5 +20,4 @@ urlpatterns = [
     path('delete_pojistenec/<str:pk>', views.delete_pojistenec, name='delete_pojistenec'),
     path('pojisteni_detail/<str:pk>/', views.detail_pojisteni, name='pojisteni_detail'),
     path('create_udalost/<str:pk>', views.CreateUdalost.as_view(), name='create_udalost'),
-    #path('pojisteni_detail/<str:pojid>/<str:pk>/', views.detail_pojisteni, name='pojisteni_detail'),
 ]
