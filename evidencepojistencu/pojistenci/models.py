@@ -6,6 +6,9 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 
 class TypPojisteni(models.Model):
+    """
+    Vytvoření tabulky s typy pojištění
+    """
     nazev_pojisteni = models.CharField(max_length=100)
 
     def __str__(self) -> str:
@@ -17,6 +20,9 @@ class TypPojisteni(models.Model):
 
 
 class Stat(models.Model):
+    """
+    Vytvoření tabulky států pro výběr státu ve formuláři
+    """
     stat = models.CharField(max_length=50)
 
     ordering = ['-stat']
@@ -30,6 +36,9 @@ class Stat(models.Model):
 
 
 class Pojistenec(models.Model):
+    """
+    Vytvoření tabulky pojištěnce
+    """
     jmeno = models.CharField(max_length=200, verbose_name='Jméno')
     prijmeni = models.CharField(max_length=200, verbose_name='Příjmení')
     email = models.EmailField(max_length=200)
@@ -53,6 +62,9 @@ class Pojistenec(models.Model):
 
 
 class SeznamPojisteni(models.Model):
+    """
+    Vytvoření tabulky seznamu pojištění
+    """
     pojistenec = models.ForeignKey(
         Pojistenec, null=True, on_delete=models.CASCADE, verbose_name='Pojištěnec')
     typ_pojisteni = models.ForeignKey(
@@ -73,6 +85,9 @@ class SeznamPojisteni(models.Model):
 
 
 class PojistneUdalosti(models.Model):
+    """
+    Vytvoření tabulky pojistných událostí
+    """
     pojisteni = models.ForeignKey(SeznamPojisteni, null=True, on_delete=models.CASCADE, verbose_name='Pojištění')
     datum_udalosti = models.CharField(max_length=10, null=True, verbose_name='Datum události')
     cas_udalosti = models.CharField(max_length=10, null=True, verbose_name='Čas události')
@@ -90,6 +105,9 @@ class PojistneUdalosti(models.Model):
 
 
 class UzivatelManager(BaseUserManager):
+    """
+    Změna registrace do admin části na email
+    """
     # tvorba uživatele
     def create_user(self, email, password):
         print(self.model)

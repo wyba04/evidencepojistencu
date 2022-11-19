@@ -5,7 +5,9 @@ from .models import *
 
 
 class PojistenecForm(forms.ModelForm):
-
+    """
+    Formulář pro zadání pojištěnce
+    """
     class Meta:
         model = Pojistenec
        # stat = forms.ModelChoiceField(queryset=Stat.objects.all())
@@ -14,6 +16,9 @@ class PojistenecForm(forms.ModelForm):
 
 
 class UzivatelForm(forms.ModelForm):
+    """
+    Registrační formulář
+    """
     password = forms.CharField(widget=forms.PasswordInput)
 
     class Meta:
@@ -22,6 +27,9 @@ class UzivatelForm(forms.ModelForm):
 
 
 class LoginForm(forms.Form):
+    """
+    Login formulář
+    """
     email = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
 
@@ -30,12 +38,18 @@ class LoginForm(forms.Form):
         
 
 class PojisteniForm(forms.ModelForm):
+    """
+    Formulář pro zadání pojištění
+    """
     class Meta:
         model = SeznamPojisteni
         fields = ['pojistenec', 'typ_pojisteni', 'predmet_pojisteni', 'hodnota_pojisteni', 'plati_od', 'plati_do', 'poznamka']
 
 
 class PojistnaUdalostForm(forms.ModelForm):
+    """ 
+    Formulář pro zadání pojistné události
+    """
     class Meta:
         model = PojistneUdalosti
         fields = ['pojisteni', 'datum_udalosti', 'cas_udalosti', 'popis_skody', 'vycisleni_skody']
