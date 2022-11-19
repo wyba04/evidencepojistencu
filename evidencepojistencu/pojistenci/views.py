@@ -265,7 +265,7 @@ class UpdatePojisteni(LoginRequiredMixin, generic.edit.CreateView):
                 pojisteni.plati_do = plati_do
                 pojisteni.poznamka = poznamka
                 pojisteni.save()
-            return redirect('pojistenec_detail', pk=pojistenec.id)
+            return redirect('pojistenec_detail', pk=pojisteni.pojistenec.id)
 
         
 def delete_pojisteni(request, pk):
@@ -332,15 +332,7 @@ class CreateUdalost(generic.edit.CreateView):
             form.save(commit=True)
             return redirect('pojisteni_detail', pk=pk)
         return render(request, self.template_name, {"form": form})
-"""    
-    pojistky = SeznamPojisteni.objects.get(pk=pk)
-    template_name = 'pojistenci/pojisteni_detail.html'
-    pojistne_udalosti = PojistneUdalosti.objects.filter(pojisteni_id=pk)
-    pocet_udalosti = pojistne_udalosti.count()
-    context = {'pojistky':pojistky, 'pojistne_udalosti':pojistne_udalosti, 'pocet_udalosti':pocet_udalosti}
 
-    return render(request, template_name, context)
-"""    
     
     
     

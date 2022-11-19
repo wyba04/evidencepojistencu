@@ -1,25 +1,33 @@
 {% extends 'base.html' %} {% block content %}
-<h3>Detail pojištění:</h3>
+<h3>Detail pojištění č. {{pojistky.id}}:</h3>
 <hr />
 <div class="row">
   <div class="col-md">
     <div class="card card-body">
-      <h1>{{pojistky.pojistenec.jmeno}} {{pojistky.pojistenec.prijmeni}}</h1>
-      <p>Tel: {{pojistky.pojistenec.telefon}}  Email: {{pojistky.pojistenec.email}}  </p>
-      <h4>
-        Adresa: {{pojistky.pojistenec.ulice_cp}}, {{pojistky.pojistenec.mesto}}, {{pojistky.pojistenec.psc}},
-        {{pojistky.pojistenec.stat}}
-        
-
-      </h4>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item list-group-item-dark"><strong>{{pojistky.pojistenec.jmeno}} {{pojistky.pojistenec.prijmeni}}</strong></li>
+        <li class="list-group-item">Tel: <strong>{{pojistky.pojistenec.telefon}}</strong> Email: <strong>{{pojistky.pojistenec.email}}</strong></li>
+        <li class="list-group-item">Adresa: <strong>{{pojistky.pojistenec.ulice_cp}}, {{pojistky.pojistenec.mesto}}, {{pojistky.pojistenec.psc}},
+          {{pojistky.pojistenec.stat}}</strong></li>
     </div>
   </div>
   <div class="col-md">
     <div class="card card-body">
-      <h5>Počet pojistných událostí:  <strong>{{pocet_udalosti}}</strong></h5>
-      <hr>
-      <br>
-      <p><a class="btn btn-primary btn-sm btn-block" href="{% url 'create_udalost' pojistky.id %}">Přidat pojistnou událost</a></p>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item list-group-item-dark">Typ pojištění: <strong>{{pojistky.typ_pojisteni}}</strong></li>
+        <li class="list-group-item">Předmět pojištění: <strong>{{pojistky.predmet_pojisteni}}</strong></li>
+        <li class="list-group-item">Hodnota pojištění: <strong>{{pojistky.hodnota_pojisteni}}</strong></li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-md">
+    <div class="card card-body">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item list-group-item-dark">Vytvořeno: <strong>{{pojistky.date_created}}</strong></li>
+        <li class="list-group-item">Počet pojistných událostí:  <strong>{{pocet_udalosti}}</strong></li>
+        <li class="list-group-item"><a class="btn btn-primary btn-sm btn-block" href="{% url 'create_udalost' pojistky.id %}">Přidat pojistnou událost</a></li>
+
+      </ul>
     </div>
   </div>
 </div>
