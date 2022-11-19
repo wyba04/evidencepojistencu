@@ -3,30 +3,32 @@
 
 <h2>Seznam pojištěnců</h2>
 <hr>
-    <table class="table table-hover">
-      <tr>
-        <th>Jméno</th>
-        <th>Příjmení</th>
-        <th>Email</th>
-        <th>Telefon</th>
-        <th>Ulice</th>
-        <th>Město</th>
-        <th>Zip</th>
-        <th>Stát</th>
-        <th></th>
-      </tr>
-      {% for pojistenec in pojistenci %}
-      <tr>
-        <td>{{pojistenec.jmeno}}</td>
-        <td>{{pojistenec.prijmeni}}</td>
-        <td>{{pojistenec.email}}</td>
-        <td>{{pojistenec.telefon}}</td>
-        <td>{{pojistenec.ulice_cp}}</td>
-        <td>{{pojistenec.mesto}}</td>
-        <td>{{pojistenec.psc}}</td>
-        <td>{{pojistenec.stat}}</td>
-        <td><a class="btn btn-sm btn-warning" href={% url 'pojistenec_detail' pojistenec.id %}>Detail</a></td>
-      </tr>
-      {% endfor %}
-    </table>
+<div class="card card-body">
+  <table class="table table-hover">
+    <tr>
+      <th>Jméno</th>
+      <th>Příjmení</th>
+      <th>Email</th>
+      <th>Telefon</th>
+      <th>Ulice</th>
+      <th>Město</th>
+      <th>Zip</th>
+      <th>Stát</th>
+      <th></th>
+    </tr>
+    {% for pojistenec in pojistenci %}
+    <tr>
+      <td>{{pojistenec.jmeno}}</td>
+      <td>{{pojistenec.prijmeni}}</td>
+      <td>{{pojistenec.email}}</td>
+      <td>{{pojistenec.telefon}}</td>
+      <td>{{pojistenec.ulice_cp}}</td>
+      <td>{{pojistenec.mesto}}</td>
+      <td>{{pojistenec.psc}}</td>
+      <td>{{pojistenec.stat}}</td>
+      <td><a class="btn btn-sm btn-warning" href={% url 'pojistenec_detail' pojistenec.id %}>Detail</a></td>
+    </tr>
+    {% endfor %}
+  </table>
+  </div>
 {% endblock %}
